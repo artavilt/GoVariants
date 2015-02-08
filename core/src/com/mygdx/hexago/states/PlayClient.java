@@ -51,8 +51,8 @@ public class PlayClient extends PlayState{
         } else {
             getBoardActor().setMyTurn(TileState.WHITE);
         }
-        boardLog.setBlackName(gsm.getBoardConfig().blackName);
-        boardLog.setWhiteName(gsm.getBoardConfig().whiteName);
+        hud.setBlackName(gsm.getBoardConfig().blackName);
+        hud.setWhiteName(gsm.getBoardConfig().whiteName);
     }
 
 

@@ -52,19 +52,12 @@ public abstract class PlayState extends GameState {
         boardActor = hud.getBoardActor();
         boardActor.setBoardCore(boardCore);
         boardLog = hud.getBoardLog();
-        boardCore.setBoardIO(boardActor);
-        boardCore.setLogIO(boardLog);
-        boardCore.setWhiteCaptureIO(new CaptureLabel(hud.getWhiteCaptureLabel(), TileState.WHITE));
-        boardCore.setBlackCaptureIO(new CaptureLabel(hud.getBlackCaptureLabel(), TileState.BLACK));
-        boardCore.setWhiteScoreIO(new ScoreLabel(hud.getWhiteScoreLabel(), TileState.WHITE));
-        boardCore.setBlackScoreIO(new ScoreLabel(hud.getBlackScoreLabel(), TileState.BLACK));
-        boardCore.setTurnIO(new TurnTile(boardActor.getTurnTile()));
         boardCore.setCoreIO( hud );
 
         chatField = hud.getChatField();
         playUndoButton = hud.getPlayUndoButton();
-        passButton = hud.getPassButton();
         scoreUndoButton = hud.getScoreUndoButton();
+        passButton = hud.getPassButton();
         doneButton = hud.getDoneButton();
 
         hud.getForwardButton().addListener(new InputListener(){

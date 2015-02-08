@@ -13,7 +13,7 @@ import com.mygdx.hexago.states.PlayState;
 
 import java.util.Stack;
 
-public class BoardActor extends Actor implements BoardIO {
+public class BoardActor extends Actor {
     private static final String TILE_ATLAS = "res/tiles/tiles.atlas";
     private static final String SELECTOR = "selector";
     private static final float sqrt3 = 1.7320508F;
@@ -44,8 +44,6 @@ public class BoardActor extends Actor implements BoardIO {
     private int myTurn;
 
     private boolean lock;
-
-
 
     public BoardActor(PlayState ps, int boardRadius){
         super();

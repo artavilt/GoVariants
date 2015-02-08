@@ -1,9 +1,14 @@
 package com.mygdx.hexago.ui;
 
+
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.hexago.Localisation;
 import com.mygdx.hexago.boardcore.CoreIO;
+import com.mygdx.hexago.boardcore.TileState;
 import com.mygdx.hexago.states.PlayState;
+
+import java.util.Stack;
 
 
 public class Hud extends Table implements CoreIO {
@@ -138,6 +143,49 @@ public class Hud extends Table implements CoreIO {
         reviewTable.add( navigateTurnTable );
     }
 
+    public void setWhiteCaptures( int captures ){
+        whiteCaptureLabel.setText(Localisation.WHITE + ": " + captures);
+    }
+
+    public void setBlackCaptures( int captures ){
+        blackCaptureLabel.setText(Localisation.BLACK + ": " + captures);
+    }
+
+    public void setBlackName( String name ){
+        boardLog.setBlackName(name);
+    }
+
+    public void setWhiteName(String name ){
+        boardLog.setWhiteName(name);
+    }
+
+    public void setWhiteScore( int score ){
+        whiteScoreLabel.setText(Localisation.WHITE + ": " + score);
+    }
+
+    public void setBlackScore(int score){
+        blackScoreLabel.setText(Localisation.BLACK + ": " + score);
+    }
+
+    public void gameMessage(String entry, int turn){
+        boardLog.gameMessage(entry, turn);
+    }
+
+    public void playerMessage(String entry, int turn){
+        boardLog.playerMessage(entry, turn);
+    }
+
+    public String getWhiteName(){ return boardLog.getWhiteName(); }
+
+    public String getBlackName(){ return boardLog.getBlackName(); }
+
+    public void updateTurn( int turn ){
+        boardActor.getTurnTile().update( turn );
+    }
+
+    public void calibrateTiles(Stack<TileState> changes){
+        boardActor.calibrateTiles(changes);
+    }
 
     public BoardLog getBoardLog() { return boardLog; }
     public ChatField getChatField() { return chatField; }
@@ -146,10 +194,6 @@ public class Hud extends Table implements CoreIO {
     public TextButton getScoreUndoButton() { return scoreUndoButton; }
     public TextButton getPassButton() { return passButton; }
     public TextButton getDoneButton() { return doneButton; }
-    public Label getWhiteCaptureLabel() { return whiteCaptureLabel; }
-    public Label getBlackCaptureLabel() { return blackCaptureLabel; }
-    public Label getWhiteScoreLabel() { return whiteScoreLabel; }
-    public Label getBlackScoreLabel() { return blackScoreLabel; }
     public TextButton getForwardButton() { return forwardButton; }
     public TextButton getBackButton(){ return backButton; }
     public TextField getTurnEntry(){ return turnEntry; }

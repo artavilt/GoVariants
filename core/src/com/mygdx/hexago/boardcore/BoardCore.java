@@ -4,13 +4,12 @@ package com.mygdx.hexago.boardcore;
 import java.util.Stack;
 
 public class BoardCore extends Stack<BoardState> {
-    private LogIO logIO;
-    private CaptureIO whiteCaptureIO;
-    private CaptureIO blackCaptureIO;
-    private BoardIO boardIO;
-    private TurnIO turnIO;
-    private ScoreIO whiteScoreIO;
-    private ScoreIO blackScoreIO;
+    //private LogIO logIO;
+    //private CaptureIO whiteCaptureIO;
+    //private CaptureIO blackCaptureIO;
+    //private BoardIO boardIO;
+    //private ScoreIO whiteScoreIO;
+    //private ScoreIO blackScoreIO;
     private CoreIO coreIO;
 
     private boolean lastTurnWasPass;
@@ -56,9 +55,9 @@ public class BoardCore extends Stack<BoardState> {
                 return false;
             }
             updateCaptures();
-            logIO.gameMessage("A" + x + ", B" + y, turn);
+            coreIO.gameMessage("A" + x + ", B" + y, turn);
             updateTurnIO();
-            boardIO.calibrateTiles(changedTiles);
+            coreIO.calibrateTiles(changedTiles);
             if( lastTurnWasPass ){ lastTurnWasPass = false; }
             showTurn = this.size()-1;
             return true;
@@ -75,8 +74,8 @@ public class BoardCore extends Stack<BoardState> {
     }
 
     public void updateCaptures(){
-        this.whiteCaptureIO.setCaptures(getCaptures(TileState.WHITE));
-        this.blackCaptureIO.setCaptures(getCaptures(TileState.BLACK));
+        coreIO.setWhiteCaptures(getCaptures(TileState.WHITE));
+        coreIO.setBlackCaptures(getCaptures(TileState.BLACK));
     }
 
     public BoardState currentTurn(){
@@ -95,7 +94,7 @@ public class BoardCore extends Stack<BoardState> {
     }
 
     public boolean pass(){
-        logIO.gameMessage("Pass", currentTurn().getTurn());
+        coreIO.gameMessage("Pass", currentTurn().getTurn());
         if( lastTurnWasPass ){
             scoring = true;
             coreIO.setScoring();
@@ -130,12 +129,12 @@ public class BoardCore extends Stack<BoardState> {
                     }
                 }
             }
-            boardIO.calibrateTiles(allTiles);
-            turnIO.updateTurn(turnState.getTurn());
-            blackScoreIO.setScore(currentTurn().getBlackScore());
-            whiteScoreIO.setScore(currentTurn().getWhiteScore());
-            blackCaptureIO.setCaptures(currentTurn().getCaptures(TileState.BLACK));
-            whiteCaptureIO.setCaptures(currentTurn().getCaptures(TileState.WHITE));
+            coreIO.calibrateTiles(allTiles);
+            coreIO.updateTurn(turnState.getTurn());
+            coreIO.setBlackScore(turnState.getBlackScore());
+            coreIO.setWhiteScore(turnState.getWhiteScore());
+            coreIO.setBlackCaptures(turnState.getCaptures(TileState.BLACK));
+            coreIO.setWhiteCaptures(turnState.getCaptures(TileState.WHITE));
             showTurn = turn;
         } catch (ArrayIndexOutOfBoundsException e){
             e.printStackTrace();
@@ -157,7 +156,7 @@ public class BoardCore extends Stack<BoardState> {
                 }
             }
             updateTurnIO();
-            boardIO.calibrateTiles(changestack);
+            coreIO.calibrateTiles(changestack);
             if( scoring ){
                 coreIO.setPlaying();
                 scoring = false;
@@ -168,34 +167,10 @@ public class BoardCore extends Stack<BoardState> {
     public boolean isScoring(){ return scoring; }
 
 
-    public void setLogIO(LogIO logIO){
-        this.logIO = logIO;
-    }
-    public void setWhiteCaptureIO( CaptureIO whiteCaptureIO ){
-        this.whiteCaptureIO = whiteCaptureIO;
-    }
-    public void setBlackCaptureIO( CaptureIO blackCaptureIO ){ this.blackCaptureIO = blackCaptureIO; }
-    public void setWhiteScoreIO( ScoreIO whiteScoreIO ){ this.whiteScoreIO = whiteScoreIO; }
-    public void setBlackScoreIO( ScoreIO blackScoreIO ){ this.blackScoreIO = blackScoreIO; }
-    public void setBoardIO( BoardIO boardIO ){
-        this.boardIO = boardIO;
-        Stack<TileState> wholeboard = new Stack<TileState>();
-        TileState[][] curboard = currentTurn().getBoard();
-        for( TileState[] row : curboard ){
-            for( TileState t: row ){
-                if( t!= null ){ wholeboard.push(t); }
-            }
-        }
-        boardIO.calibrateTiles(wholeboard);
-    }
-    public void setTurnIO( TurnIO turnIO ){
-        this.turnIO = turnIO;
-        updateTurnIO();
-    }
     public void setCoreIO( CoreIO coreIO ){ this.coreIO = coreIO; }
 
     private void updateTurnIO(){
-        turnIO.updateTurn(getTurn());
+        coreIO.updateTurn(getTurn());
     }
 
 

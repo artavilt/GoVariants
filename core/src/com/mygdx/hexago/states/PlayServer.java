@@ -195,8 +195,8 @@ public class PlayServer extends PlayState{
         } else {
             gsm.getBoardConfig().blackName = clientName;
         }
-        boardLog.setBlackName(gsm.getBoardConfig().blackName);
-        boardLog.setWhiteName(gsm.getBoardConfig().whiteName);
+        hud.setBlackName(gsm.getBoardConfig().blackName);
+        hud.setWhiteName(gsm.getBoardConfig().whiteName);
         //gsm.getBoardConfig().opponentName = clientName;
 
 

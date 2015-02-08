@@ -2,11 +2,10 @@ package com.mygdx.hexago.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.mygdx.hexago.boardcore.LogIO;
 import com.mygdx.hexago.boardcore.TileState;
 
 
-public class BoardLog extends ScrollPane implements LogIO {
+public class BoardLog extends ScrollPane{
     private String whiteName;
     private String blackName;
     private Table innerTable;
