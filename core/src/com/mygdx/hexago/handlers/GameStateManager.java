@@ -46,6 +46,7 @@ public class GameStateManager {
         client.getKryo().register( ChatPacket.class );
         client.getKryo().register( UndoPacket.class );
         client.getKryo().register( PassPacket.class );
+        client.getKryo().register( MarkDeadPacket.class );
         server.getKryo().register( Packet.class );
         server.getKryo().register( ClientConnectPacket.class );
         server.getKryo().register( BoardConfigPacket.class );
@@ -54,6 +55,7 @@ public class GameStateManager {
         server.getKryo().register( ChatPacket.class );
         server.getKryo().register( UndoPacket.class );
         server.getKryo().register( PassPacket.class );
+        server.getKryo().register( MarkDeadPacket.class );
     }
 
     public Game game() { return game; }

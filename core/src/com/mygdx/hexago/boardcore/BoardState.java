@@ -275,8 +275,8 @@ public class BoardState {
 
     private void calculateScoreGroup( TileState tile, ArrayList<TileState> scoreGroup ){
         for( int[] dir : dirVectors ){
-            if( tile != null ){
-                TileState adjacentTile = getTileState( tile.x + dir[0], tile.y + dir[1]);
+            TileState adjacentTile = getTileState( tile.x + dir[0], tile.y + dir[1]);
+            if( adjacentTile != null ){
                 if( adjacentTile.state != TileState.BLACK
                         && adjacentTile.state != TileState.WHITE
                         && adjacentTile.scoregroup == 0){

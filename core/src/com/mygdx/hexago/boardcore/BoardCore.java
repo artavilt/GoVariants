@@ -84,6 +84,13 @@ public class BoardCore extends Stack<BoardState> {
         return currentTurn().getTileState(x, y) != null;
     }
 
+    public boolean isMarkedDead(int x, int y){
+        if( onBoardCheck(x, y) ){
+            return currentTurn().getTileState(x, y).isDead();
+        }
+        return false;
+    }
+
     public boolean pass(){
         logIO.gameMessage("Pass", currentTurn().getTurn());
         if( lastTurnWasPass ){
@@ -139,6 +146,9 @@ public class BoardCore extends Stack<BoardState> {
             }
         }
     }
+
+    public boolean isScoring(){ return scoring; }
+
 
     public void setLogIO(LogIO logIO){
         this.logIO = logIO;

@@ -43,6 +43,11 @@ public class PlayServer extends PlayState{
                     } else if( object instanceof PassPacket ){
                         boardCore.pass();
                         System.out.println("pass received");
+                    } else if( object instanceof MarkDeadPacket ){
+                        MarkDeadPacket mdPack = (MarkDeadPacket) object;
+                        if( boardCore.isMarkedDead(mdPack.x, mdPack.y) != mdPack.markdead){
+                            boardActor.attemptPlay(mdPack.x, mdPack.y);
+                        }
                     }
                 }
             }
@@ -159,11 +164,19 @@ public class PlayServer extends PlayState{
     }
 
     public void turnEvent(int x, int y){
-        if( ! getBoardActor().isMyTurn() ){
-            BoardPacket boardPacket = new BoardPacket();
-            boardPacket.x = x;
-            boardPacket.y = y;
-            server.sendToAllTCP(boardPacket);
+        if( boardCore.isScoring() ){
+            MarkDeadPacket mdPack = new MarkDeadPacket();
+            mdPack.x = x;
+            mdPack.y = y;
+            mdPack.markdead = boardCore.isMarkedDead( x, y );
+            server.sendToAllTCP(mdPack);
+        } else {
+            if (!getBoardActor().isMyTurn()) {
+                BoardPacket boardPacket = new BoardPacket();
+                boardPacket.x = x;
+                boardPacket.y = y;
+                server.sendToAllTCP(boardPacket);
+            }
         }
     }
 

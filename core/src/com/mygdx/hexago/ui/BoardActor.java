@@ -155,11 +155,9 @@ public class BoardActor extends Actor implements BoardIO {
     }
 
     public void attemptPlay( int x, int y ){
-        //Stack<TileState> changes = boardCore.takeTurn( x, y );
         if( boardCore.input(x, y) ){
             ps.turnEvent( x, y );
         }
-        //calibrateTiles(changes);
     }
 
     public void calibrateTiles(Stack<TileState> changes ){
@@ -204,11 +202,10 @@ public class BoardActor extends Actor implements BoardIO {
 
         @Override
         public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-            if( isMyTurn() ){
+            if( isMyTurn() || boardCore.isScoring() ){
                 int[] ind = getMouseIndex();
                 attemptPlay(ind[0], ind[1]);
             }
-
             super.touchUp(event, x, y, pointer, button);
         }
 
