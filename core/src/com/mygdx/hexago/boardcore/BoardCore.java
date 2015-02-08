@@ -15,10 +15,12 @@ public class BoardCore extends Stack<BoardState> {
 
     private boolean lastTurnWasPass;
     private boolean scoring;
+    private int showTurn;
 
     public BoardCore(int boardRadius, int turn){
         super();
         add(new BoardState(boardRadius * 2 - 1, turn));
+        showTurn = 0;
     }
 
     public boolean input(int x, int y){
@@ -58,6 +60,7 @@ public class BoardCore extends Stack<BoardState> {
             updateTurnIO();
             boardIO.calibrateTiles(changedTiles);
             if( lastTurnWasPass ){ lastTurnWasPass = false; }
+            showTurn = this.size()-1;
             return true;
         }
         return false;
@@ -99,32 +102,47 @@ public class BoardCore extends Stack<BoardState> {
             add(currentTurn().copy());
             currentTurn().calculateAllScoreGroups();
             calibrate();
+            showTurn = size()-1;
             return true;
         } else {
             lastTurnWasPass = true;
             add(currentTurn().copy());
             currentTurn().toggleTurn();
             updateTurnIO();
+            showTurn = size()-1;
             return false;
         }
     }
 
     private void calibrate(){
-        TileState[][] board = currentTurn().getBoard();
-        Stack<TileState> alltiles = new Stack<TileState>();
-        for( TileState[] row : board ){
-            for( TileState tile : row ){
-                if( tile != null ){
-                    alltiles.push(tile);
+        showTurn(this.size()-1);
+    }
+
+    public void showTurn( int turn ){
+        try{
+            BoardState turnState = get(turn);
+            TileState[][] board = turnState.getBoard();
+            Stack<TileState> allTiles = new Stack<TileState>();
+            for( TileState[] row : board ){
+                for( TileState tile : row ){
+                    if( tile != null ){
+                        allTiles.push(tile);
+                    }
                 }
             }
+            boardIO.calibrateTiles(allTiles);
+            turnIO.updateTurn(turnState.getTurn());
+            blackScoreIO.setScore(currentTurn().getBlackScore());
+            whiteScoreIO.setScore(currentTurn().getWhiteScore());
+            blackCaptureIO.setCaptures(currentTurn().getCaptures(TileState.BLACK));
+            whiteCaptureIO.setCaptures(currentTurn().getCaptures(TileState.WHITE));
+            showTurn = turn;
+        } catch (ArrayIndexOutOfBoundsException e){
+            e.printStackTrace();
         }
-        boardIO.calibrateTiles(alltiles);
-        blackScoreIO.setScore(currentTurn().getBlackScore());
-        whiteScoreIO.setScore(currentTurn().getWhiteScore());
-        blackCaptureIO.setCaptures(currentTurn().getCaptures(TileState.BLACK));
-        whiteCaptureIO.setCaptures(currentTurn().getCaptures(TileState.WHITE));
     }
+
+    public int getShownTurn(){ return showTurn; }
 
     public void undo(){
         if( size() > 1 ) {

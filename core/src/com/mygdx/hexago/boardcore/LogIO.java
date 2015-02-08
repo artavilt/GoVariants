@@ -11,4 +11,7 @@ public interface LogIO {
 
     public void playerMessage(String entry, int turn);
 
+    public String getWhiteName();
+
+    public String getBlackName();
 }

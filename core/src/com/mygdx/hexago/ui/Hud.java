@@ -22,8 +22,15 @@ public class Hud extends Table implements CoreIO {
     private TextButton scoreUndoButton;
     private TextButton doneButton;
     private Table captureTable;
+    private Table navigateTurnTable;
     private Table scoreTable;
     private Table turnTable;
+    private Table reviewTable;
+    private TextButton forwardButton;
+    private TextButton backButton;
+    private TextField turnEntry;
+
+    private Cell controlCell;
 
     public Hud(PlayState ps, int boardRadius){
         super(ps.getSkin());
@@ -47,6 +54,11 @@ public class Hud extends Table implements CoreIO {
         passButton = new TextButton("Pass", skin);
         scoreUndoButton = new TextButton("Undo", skin);
         doneButton = new TextButton("Done", skin);
+        forwardButton = new TextButton("+1", skin);
+        backButton = new TextButton("-1", skin);
+        reviewTable = new Table(skin);
+        navigateTurnTable = new Table(skin);
+        turnEntry = new TextField("", skin);
 
         this.add(boardActor);
         this.add(guiTable).right();
@@ -66,11 +78,17 @@ public class Hud extends Table implements CoreIO {
         turnTable.add("Turn:  ");
         turnTable.add(boardActor.getTurnTile().getImage()).size(60, 60);
 
-        guiTable.add(playTable);
+        navigateTurnTable.add("Navigate Game: ").row();
+        navigateTurnTable.add(backButton).pad(0, 0, 0, 10);
+        navigateTurnTable.add(turnEntry).width(60);
+        navigateTurnTable.add(forwardButton).pad(0, 10, 0, 0);
+
+        controlCell = guiTable.add(playTable);
         playTable.add(turnTable).row();
         playTable.add(captureTable).row();
         playTable.add(playUndoButton).padTop(10).size(60, 40).row();
         playTable.add(passButton).padTop(10).size(60, 40).row();
+
     }
 
     public void resize(int width, int height ){
@@ -87,7 +105,7 @@ public class Hud extends Table implements CoreIO {
 
     public void setScoring(){
         try{
-            guiTable.getCell(playTable).setActor(scoringTable);
+            controlCell.setActor(scoringTable);
             scoringTable.clearChildren();
             scoringTable.add(scoreTable).row();
             scoringTable.add(captureTable).row();
@@ -100,7 +118,7 @@ public class Hud extends Table implements CoreIO {
 
     public void setPlaying(){
         try{
-            guiTable.getCell(scoringTable).setActor(playTable);
+            controlCell.setActor(playTable);
             playTable.clearChildren();
             playTable.add(turnTable).row();
             playTable.add(captureTable).row();
@@ -110,6 +128,14 @@ public class Hud extends Table implements CoreIO {
             System.out.println("Something is wrong. Already playing.");
         }
 
+    }
+
+    public void setReviewing(){
+        controlCell.setActor(reviewTable);
+        reviewTable.clearChildren();
+        reviewTable.add( turnTable ).row();
+        reviewTable.add( captureTable ).row();
+        reviewTable.add( navigateTurnTable );
     }
 
 
@@ -124,4 +150,7 @@ public class Hud extends Table implements CoreIO {
     public Label getBlackCaptureLabel() { return blackCaptureLabel; }
     public Label getWhiteScoreLabel() { return whiteScoreLabel; }
     public Label getBlackScoreLabel() { return blackScoreLabel; }
+    public TextButton getForwardButton() { return forwardButton; }
+    public TextButton getBackButton(){ return backButton; }
+    public TextField getTurnEntry(){ return turnEntry; }
 }

@@ -10,5 +10,4 @@ public interface BoardIO {
     /** attempt to take a turn */
     public void attemptPlay(int x, int y);
 
-
 }

@@ -57,6 +57,16 @@ public class Play extends PlayState {
                 boardCore.pass();
             }
         });
+        doneButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                doneDialog();
+            }
+        });
     }
 
     public void turnEvent(int x, int y){}

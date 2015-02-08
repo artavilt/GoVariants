@@ -43,6 +43,9 @@ public class BoardActor extends Actor implements BoardIO {
 
     private int myTurn;
 
+    private boolean lock;
+
+
 
     public BoardActor(PlayState ps, int boardRadius){
         super();
@@ -67,7 +70,7 @@ public class BoardActor extends Actor implements BoardIO {
 
         boardCore = new BoardCore(boardRadius, TileState.BLACK);
         turnTile = new Tile( textureAtlas );
-
+        lock = false;
         addListener( new BoardInputListener() );
     }
 
@@ -168,7 +171,9 @@ public class BoardActor extends Actor implements BoardIO {
         }
     }
 
+    public void lock(){ lock = true; }
 
+    public void unlock(){ lock = false; }
 
     public Tile getTurnTile(){
         return this.turnTile;
@@ -202,7 +207,7 @@ public class BoardActor extends Actor implements BoardIO {
 
         @Override
         public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-            if( isMyTurn() || boardCore.isScoring() ){
+            if( !lock && (isMyTurn() || boardCore.isScoring()) ){
                 int[] ind = getMouseIndex();
                 attemptPlay(ind[0], ind[1]);
             }

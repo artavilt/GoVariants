@@ -33,6 +33,10 @@ public class BoardLog extends ScrollPane implements LogIO {
         whiteName = name;
     }
 
+    public String getBlackName() { return blackName; }
+
+    public String getWhiteName() { return whiteName; }
+
     public void gameMessage(String entry, int turn){
         String name;
         if( turn == TileState.BLACK ){ name = blackName; }
